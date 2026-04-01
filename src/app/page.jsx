@@ -1,22 +1,59 @@
-export default function Home () {
-    return (
-        <main style={{
-            padding: "40px",
-            fontFamily: "Arial"
-        }}>
-            <h1>Welcome to My Blog</h1>
+"use client"
 
-            <p>This is my beautiful blog homepage.</p>
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
-            <button style={{
-                padding: "10px 20px",
-                background: "blue",
-                color: "white",
-                border: "none",
-                borderRadius: "8px"
-            }}>
-               Read Blog
-            </button>
-        </main>
-    );
+import Hero from "./components/Hero"
+import TrendingGames from "./components/TrendingGames"
+import FeaturedArticles from "./components/FeaturedArticles"
+import Footer from "./components/Footer"
+
+export default function Home(){
+
+const router = useRouter()
+
+useEffect(()=>{
+
+const loggedIn = localStorage.getItem("loggedIn")
+
+if(!loggedIn){
+router.push("/login")
+}
+
+},[])
+
+return(
+
+<div>
+
+<button
+onClick={()=>{
+localStorage.removeItem("loggedIn")
+router.push("/login")
+}}
+style={{
+position:"absolute",
+top:"20px",
+right:"20px",
+padding:"10px",
+background:"red",
+color:"white",
+border:"none"
+}}
+>
+Logout
+</button>
+
+<Hero />
+
+<TrendingGames />
+
+<FeaturedArticles />
+
+<Footer />
+
+</div>
+
+)
+
 }
