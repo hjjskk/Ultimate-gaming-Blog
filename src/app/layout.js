@@ -1,16 +1,19 @@
+import './global.css';
+
 export const metadata = {
-  title: "Ultimate Gaming Blog",
-  description: "Gaming news, esports and pro strategies",
+  title: 'Login',
+  description: 'My app',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-
-        {children}
-
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

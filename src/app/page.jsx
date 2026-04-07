@@ -8,52 +8,44 @@ import TrendingGames from "./components/TrendingGames"
 import FeaturedArticles from "./components/FeaturedArticles"
 import Footer from "./components/Footer"
 
-export default function Home(){
+export default function Home() {
 
-const router = useRouter()
+    const router = useRouter()
 
-useEffect(()=>{
+    useEffect(() => {
 
-const loggedIn = localStorage.getItem("loggedIn")
+        const loggedIn = localStorage.getItem("loggedIn")
 
-if(!loggedIn){
-router.push("/login")
-}
+        if (!loggedIn) {
+            router.push("/login")
+        }
 
-},[])
+    }, [])
 
-return(
+    return (
 
-<div>
+        <div className="app-wrapper">
 
-<button
-onClick={()=>{
-localStorage.removeItem("loggedIn")
-router.push("/login")
-}}
-style={{
-position:"absolute",
-top:"20px",
-right:"20px",
-padding:"10px",
-background:"red",
-color:"white",
-border:"none"
-}}
->
-Logout
-</button>
+            <button
+                onClick={() => {
+                    localStorage.removeItem("loggedIn")
+                    router.push("/login")
+                }}
+                className="logout-button"
+            >
+                Logout
+            </button>
 
-<Hero />
+            <Hero />
 
-<TrendingGames />
+            <TrendingGames />
 
-<FeaturedArticles />
+            <FeaturedArticles />
 
-<Footer />
+            <Footer />
 
-</div>
+        </div>
 
-)
+    )
 
 }

@@ -5,125 +5,126 @@ import { useRouter } from "next/navigation"
 
 export default function Login() {
 
-const router = useRouter()
+    const router = useRouter()
 
-const [email,setEmail] = useState("")
-const [password,setPassword] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [message, setMessage] = useState("")
 
-function handleLogin(){
+    const getUsers = () => {
+        try {
+            const saved = localStorage.getItem("users")
+            return saved ? JSON.parse(saved) : []
+        } catch {
+            return []
+        }
+    }
 
-if(email && password){
+    const setUsers = (users) => {
+        localStorage.setItem("users", JSON.stringify(users))
+    }
 
-localStorage.setItem("loggedIn","true")
+    function handleLogin() {
+        if (!email || !password) {
+            setMessage("Please enter email and password to sign in.")
+            return
+        }
 
-router.push("/")
+        const users = getUsers()
+        const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase())
 
-}else{
+        if (!user) {
+            setMessage("No account found. Please create one first.")
+            return
+        }
 
-alert("Enter email and password")
+        if (user.password !== password) {
+            setMessage("Email or password is incorrect.")
+            return
+        }
 
-}
+        localStorage.setItem("loggedIn", "true")
+        localStorage.setItem("currentUser", email)
+        router.push("/")
+    }
 
-}
+    return (
 
-return (
+        <div className="login-page">
 
-<div style={{
-display:"flex",
-minHeight:"100vh",
-width:"100vw",
-fontFamily:"Arial"
-}}>
+            {/* LEFT SIDE */}
 
-{/* LEFT SIDE */}
+            <div className="login-info">
 
-<div style={{
-flex:1,
-background:"#111827",
-color:"white",
-display:"flex",
-flexDirection:"column",
-justifyContent:"center",
-padding:"60px"
-}}>
+                <h1>Welcome Gamer 🎮</h1>
 
-<h1>Welcome Gamer 🎮</h1>
+                <p>Discover gaming articles, esports news and pro tips.</p>
 
-<p>Discover gaming articles, esports news and pro tips.</p>
+                <ul>
+                    <li>🔥 Latest Gaming News</li>
+                    <li>🎮 Game Reviews</li>
+                    <li>🏆 Esports Tournaments</li>
+                    <li>📈 Rank Up Tips</li>
+                </ul>
 
-<ul>
-<li>🔥 Latest Gaming News</li>
-<li>🎮 Game Reviews</li>
-<li>🏆 Esports Tournaments</li>
-<li>📈 Rank Up Tips</li>
-</ul>
-
-</div>
+            </div>
 
 
-{/* RIGHT SIDE */}
+            {/* RIGHT SIDE */}
 
-<div style={{
-flex:1,
-display:"flex",
-flexDirection:"column",
-justifyContent:"center",
-alignItems:"center",
-background:"#f4f4f4"
-}}>
+            <div className="login-form">
 
-<h2>Sign In</h2>
+                <h2>Sign In</h2>
 
-<input
-type="email"
-placeholder="Email"
-value={email}
-onChange={(e)=>setEmail(e.target.value)}
-style={{padding:10,margin:10,width:250}}
-/>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="auth-input"
+                />
 
-<input
-type="password"
-placeholder="Password"
-value={password}
-onChange={(e)=>setPassword(e.target.value)}
-style={{padding:10,margin:10,width:250}}
-/>
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="auth-input"
+                />
 
-<button
-onClick={handleLogin}
-style={{
-padding:10,
-width:250,
-background:"#2563eb",
-color:"white",
-border:"none"
-}}
->
-Sign In
-</button>
+                <button
+                    onClick={handleLogin}
+                    className="auth-button"
+                >
+                    Sign In
+                </button>
 
-<p style={{marginTop:10,cursor:"pointer",color:"blue"}}>
-Forgot Password?
-</p>
+                {message ? (
+                    <p style={{ marginTop: 10, color: "#b91c1c" }}>{message}</p>
+                ) : null}
 
-<button
-style={{
-padding:10,
-width:250,
-background:"#16a34a",
-color:"white",
-border:"none",
-marginTop:10
-}}
->
-Create Account
-</button>
+                <p style={{ marginTop: 10, cursor: "pointer", color: "blue" }}>
+                    Forgot Password?
+                </p>
 
-</div>
+                <p
+                    className="link-text"
+                    onClick={() => router.push("/signup")}
+                >
+                    Don’t have an account? Sign up
+                </p>
 
-</div>
+                <button
+                    onClick={() => router.push("/signup")}
+                    className="auth-button"
+                >
+                    Sign up
+                </button>
 
-)
+            </div>
+
+        </div>
+
+    )
 
 }
